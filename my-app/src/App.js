@@ -33,9 +33,9 @@ import Person from './Person/Person.js';
 class App extends Component {
   state = {
     persons: [
-      { name: 'Bohdan', age: 27},
-      { name: 'Ivan', age: 65},
-      { name: 'Petro', age: 16}
+      {id: 'dfvew3', name: 'Bohdan', age: 27},
+      {id: 'sadf3q', name: 'Ivan', age: 65},
+      {id: 'asdf34', name: 'Petro', age: 16}
     ],
     otherState: 'bla-bla-bla',
     showPersons: false
@@ -49,12 +49,15 @@ class App extends Component {
     });
   }
 
-  nameChangeHandler = (event) => {
-    this.setState({persons:  [
-      { name: event.target.value, age: 30},
-      { name: 'Ivan', age: 74}
-      ] 
-    });
+  nameChangeHandler = (event, id) => {
+    const personIndex = this.state.persons.findIndex( (p) => p.id === id);
+    const person = { ...this.state.persons[personIndex] }; // the same like const person = Object.assign({}, this.state.persons[personIndex]);
+    person.name = event.target.value;
+
+    const persons = [ ...this.state.persons ];
+    persons[personIndex] = person;
+
+    this.setState({ persons: persons });
   }
 
   togglePersonsHandler = () => {
@@ -86,7 +89,8 @@ class App extends Component {
                 name={person.name} 
                 age={person.age}
                 click={ () => this.deletePersonHandler(index)}
-                changed={this.nameChangeHandler}>
+                changed={ (event) => { this.nameChangeHandler(event, person.id)} }
+                key={person.id}>
               </Person>
             );
           })}
