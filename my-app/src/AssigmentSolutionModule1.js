@@ -3,7 +3,7 @@ import  './AssigmentSolution.css';
 import UserInput from './UserInput/UserInput';
 import UserOutput from './UserOutput/UserOutput'
 
-function AssigmentSolution() {
+function AssigmentSolutionModule1() {
     const [personState, setPerson] = useState( {
         persons: [
             { username: 'Cesar'},
@@ -21,7 +21,7 @@ function AssigmentSolution() {
     }
 
     return (
-    <div className="AssigmentSolution">
+    <div className="AssigmentSolutionModule1">
        <UserInput changed={usernameChangedHandler} currentName={personState.persons[0].username}/>
        <UserOutput userMame={personState.persons[0].username}/>
        <UserOutput userMame={personState.persons[1].username}/>
@@ -29,4 +29,4 @@ function AssigmentSolution() {
     );
 }
 
-export default AssigmentSolution;
+export default AssigmentSolutionModule1;

@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-//import AssigmentSolution from './AssigmentSolution';
+//import App from './App';
+//import AssigmentSolutionModule1 from './AssigmentSolutionModule1';
+import AssigmentSolutionModule2 from './AssigmentSolutionModule2';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
-//ReactDOM.render(<AssigmentSolution />, document.getElementById('root'));
+//ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<AssigmentSolutionModule2 />, document.getElementById('root'));
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
