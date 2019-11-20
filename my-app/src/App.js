@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 //import logo from './logo.svg';
 import './App.css';
 import Person from './Person/Person.js';
+import Radium,  { StyleRoot } from 'radium';
 
 //{ useState } function App(props) {
 //   const [personState, setPerson] = useState( {
@@ -72,11 +73,14 @@ class App extends Component {
   }
 
   render () {
-    const style = {
+    const styleBtn = {
       backgroundColor: 'yellowgreen',
       color: 'white',
       font: 'inherit',
-      padding: '8px'
+      padding: '8px',
+      ':hover': {
+        transform: 'scale(1.1)'
+      }
     };
 
     let persons = null;
@@ -98,19 +102,21 @@ class App extends Component {
         </div>
       );
 
-      style.backgroundColor = 'red';
+      styleBtn.backgroundColor = 'red';
     }
 
-    let classes = ['red', 'bold'];
+    let classes = ['red', 'bold'].join(' ');
 
     return (
-      <div className="App">
-        <h1>Hello World!</h1>
-        <button style={style} onClick={ () => this.togglePersonsHandler()}>Switch me!</button>
-        {persons}
-      </div>
+       <StyleRoot>
+        <div className="App">
+          <h1 className={classes}>Hello World!</h1>
+          <button style={styleBtn} onClick={ () => this.togglePersonsHandler()}>Switch me!</button>
+          {persons}
+        </div>
+      </StyleRoot>
     )
   }
 }
 
-export default App;
+export default Radium(App);
