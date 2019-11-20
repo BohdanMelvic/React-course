@@ -74,6 +74,7 @@ class App extends Component {
   render () {
     const style = {
       backgroundColor: 'yellowgreen',
+      color: 'white',
       font: 'inherit',
       padding: '8px'
     };
@@ -96,33 +97,17 @@ class App extends Component {
           })}
         </div>
       );
+
+      style.backgroundColor = 'red';
     }
+
+    let classes = ['red', 'bold'];
 
     return (
       <div className="App">
         <h1>Hello World!</h1>
         <button style={style} onClick={ () => this.togglePersonsHandler()}>Switch me!</button>
         {persons}
-
-        {/* { this.state.showPersons ?
-            <div>
-              <Person 
-                name={this.state.persons[0].name} 
-                age={this.state.persons[0].age}
-                click={this.switchNameHandler.bind(this, 'Hui')}
-                changed={this.nameChangeHandler}>
-              
-                Text outside
-              </Person>
-              <Person 
-                name={this.state.persons[1].name} 
-                age={this.state.persons[1].age}>
-                {this.state.otherState}
-              </Person>
-            </div> 
-          : null
-        } */}
-
       </div>
     )
   }
