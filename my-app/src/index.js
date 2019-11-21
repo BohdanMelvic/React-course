@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import App from './containers/App';
 //import AssigmentSolutionModule1 from './AssigmentSolutionModule1';
 //import AssigmentSolutionModule2 from './AssigmentSolutionModule2';
 import * as serviceWorker from './serviceWorker';
