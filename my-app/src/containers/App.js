@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 //import logo from './logo.svg';
 import './App.css';
-import Person from '../components/Persons/Person/Person.js';
+import Persons from '../components/Persons/Persons.js';
 import Radium,  { StyleRoot } from 'radium';
-import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
+import Cockpit from '../components/Cockpit/Cockpit';
 
 //{ useState } function App(props) {
 //   const [personState, setPerson] = useState( {
@@ -74,48 +74,30 @@ class App extends Component {
   }
 
   render () {
-    const styleBtn = {
-      backgroundColor: 'yellowgreen',
-      color: 'white',
-      font: 'inherit',
-      padding: '8px',
-      ':hover': {
-        transform: 'scale(1.1)'
-      }
-    };
 
     let persons = null;
 
     if (this.state.showPersons) {
       persons = (
         <div>
-          {this.state.persons.map( (person, index) => {
-            return (
-              <ErrorBoundary>
-              <Person 
-                name={person.name} 
-                age={person.age}
-                click={ () => this.deletePersonHandler(index)}
-                changed={ (event) => { this.nameChangeHandler(event, person.id)} }
-                key={person.id}>
-              </Person>
-              </ErrorBoundary>
-            );
-          })}
+          <Persons 
+            persons={this.state.persons} 
+            click={this.deletePersonHandler}
+            changed={this.nameChangeHandler}
+          />
         </div>
       );
-
-      styleBtn.backgroundColor = 'red';
     }
-
-    let classes = ['red', 'bold'].join(' ');
 
     return (
        <StyleRoot>
         <div className="App">
-          <h1 className={classes}>Hello World!</h1>
-          <button style={styleBtn} onClick={ () => this.togglePersonsHandler()}>Switch me!</button>
-          {persons}
+          <Cockpit
+            persons={this.state.persons}
+            clicked={this.togglePersonsHandler} 
+            showPersons={this.state.showPersons}
+          />
+          {persons} 
         </div>
       </StyleRoot>
     )
