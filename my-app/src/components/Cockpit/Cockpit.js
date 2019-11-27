@@ -20,7 +20,7 @@ const cockpit = (props) => {
 
     return (
     <div>
-        <h1 className={classes}>Hello World!</h1>
+        <h1 className={classes}>{props.title}</h1>
         <button style={styleBtn} onClick={ () => props.clicked()}>Switch me!</button>
     </div>
     );

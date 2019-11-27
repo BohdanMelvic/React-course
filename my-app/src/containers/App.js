@@ -33,14 +33,27 @@ import Cockpit from '../components/Cockpit/Cockpit';
 // }
 
 class App extends Component {
-  state = {
-    persons: [
-      {id: 'dfvew3', name: 'Bohdan', age: 27},
-      {id: 'sadf3q', name: 'Ivan', age: 65},
-      {id: 'asdf34', name: 'Petro', age: 16}
-    ],
-    otherState: 'bla-bla-bla',
-    showPersons: false
+  constructor(props) {
+    super(props);
+    console.log('[App.js] constructor');
+    this.state = {
+      persons: [
+        {id: 'dfvew3', name: 'Bohdan', age: 27},
+        {id: 'sadf3q', name: 'Ivan', age: 65},
+        {id: 'asdf34', name: 'Petro', age: 16}
+      ],
+      otherState: 'bla-bla-bla',
+      showPersons: false
+    }
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    console.log('[App.js] getDerivedStateFromProps', props);
+    return state;
+  }
+
+  componentDidMount() {
+    console.log('[App.js] componentDidMount');
   }
 
   switchNameHandler = (newName) => {
@@ -76,16 +89,14 @@ class App extends Component {
   render () {
 
     let persons = null;
-
+    console.log('[App.js] render');
     if (this.state.showPersons) {
       persons = (
-        <div>
-          <Persons 
-            persons={this.state.persons} 
-            click={this.deletePersonHandler}
-            changed={this.nameChangeHandler}
-          />
-        </div>
+        <Persons 
+          persons={this.state.persons} 
+          click={this.deletePersonHandler}
+          changed={this.nameChangeHandler}
+        />
       );
     }
 
@@ -93,6 +104,7 @@ class App extends Component {
        <StyleRoot>
         <div className="App">
           <Cockpit
+            title={this.props.title}
             persons={this.state.persons}
             clicked={this.togglePersonsHandler} 
             showPersons={this.state.showPersons}

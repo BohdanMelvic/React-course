@@ -6,7 +6,7 @@ import App from './containers/App';
 //import AssigmentSolutionModule2 from './AssigmentSolutionModule2';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App title='Person Manager' />, document.getElementById('root'));
 //ReactDOM.render(<AssigmentSolutionModule2 />, document.getElementById('root'));
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
