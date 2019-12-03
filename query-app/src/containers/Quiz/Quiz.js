@@ -7,7 +7,16 @@ export class Quiz extends Component {
         super(props)
     
         this.state = {
-             quiz: []
+             quiz: [
+                 {
+                   answers: [
+                       {text: "some text 1"},
+                       {text: "some text 2"},
+                       {text: "some text 3"},
+                       {text: "some text 4"}
+                   ]  
+                 }
+             ]
         }
     }
     
@@ -15,9 +24,11 @@ export class Quiz extends Component {
         return (
             <div className="Quiz">
                <div className="QuizWrapper">
-                <h1>Quiz</h1>
+                <h1>Answer the question:</h1>
 
-                <ActiveQuiz />
+                <ActiveQuiz 
+                    answers={this.state.quiz[0].answers}
+                />
                </div>
             </div>
         )
