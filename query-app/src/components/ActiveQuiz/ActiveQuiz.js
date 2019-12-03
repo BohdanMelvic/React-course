@@ -7,14 +7,16 @@ export default function ActiveQuiz(props) {
         <div className="ActiveQuiz">
             <p className="Question">
                 <span>
-                    <strong>2. </strong>
-                    How are you?
+                    <strong>{props.questionNumber}. </strong>
+                    {props.question}
                 </span>
-                <small>4 / 5</small>
+                <small>{props.questionNumber} / {props.quizLength}</small>
             </p>
 
             <AnswerList 
                 answers={props.answers}
+                clicked={props.clicked}
+                state={props.state}
             />
         </div>
     )

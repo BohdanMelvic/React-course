@@ -8,8 +8,10 @@ export default function AnswerList(props) {
             {props.answers.map( (answer, index) => {
                 return (
                     <AnswerItem
-                        key={index} 
+                        key={index}
                         answer={answer}
+                        clicked={props.clicked}
+                        state={props.state ? props.state[answer.id] : null}
                     />
                 )
             })}
