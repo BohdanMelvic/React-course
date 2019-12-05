@@ -19,7 +19,7 @@ export class Drawer extends Component {
     }
 
     clickHandler = () => {
-        this.props.onClose();
+        this.props.onClose()
     }
 
     renderLinks() {
