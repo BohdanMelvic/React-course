@@ -10,13 +10,20 @@ export default class Cars extends Component {
     ]
   }
 
+  goToHomePage = () => {
+    this.props.history.push('/')
+  }
+
   render() {
     return (
       <div style={{
         width: 400,
         margin: 'auto',
-        paddingTop: '20px'
+        paddingTop: '20px',
+        textAlign: 'center'
       }}>
+      <button onClick={this.goToHomePage}>Go to home page</button>
+      <hr/>
         {this.state.cars.map((car, index) => {
           return (
             <Car
