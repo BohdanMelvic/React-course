@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import './QuizList.css'
+import {NavLink} from 'react-router-dom'
 
 export class QuizList extends Component {
     constructor(props) {
@@ -9,11 +10,33 @@ export class QuizList extends Component {
              
         }
     }
+
+    renderQuizes = () => {
+        return [1, 2, 3].map( (quiz, index) => {
+            return (
+                <li
+                    key={index}
+                > 
+                    <NavLink 
+                        to={'quiz/' + quiz}
+                    > 
+                        Test {quiz}
+                    </NavLink>
+                </li>
+            )
+        })
+    }
     
     render() {
         return (
             <div className='QuizList'>
-                <h1>Quiz List</h1>
+               <div>
+               <h1>Test List</h1>
+
+                <ul>
+                    {this.renderQuizes()}
+                </ul>
+               </div>
             </div>
         )
     }

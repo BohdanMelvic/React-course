@@ -17,17 +17,17 @@
     transform: translateX(-300px)
 }
 
-ul {
+.Drawer ul {
    list-style: none; 
    padding: 0;
    margin: 0;
 }
 
-ul li {
+.Drawer ul li {
     margin-bottom: 15px;
 }
 
-ul li a {
+.Drawer ul li a {
     color: #363d54;
     font-size: 30px;
     text-decoration: none;
@@ -37,6 +37,6 @@ ul li a {
     transition: opacity .3s;
 }
 
-ul li a:hover, .active {
+.Drawer ul li a:hover, .Drawer .active {
     opacity: .7;
 }

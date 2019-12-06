@@ -13,6 +13,6 @@
     opacity: .7;
 }
 
-.open {
+.MenuToggle.open {
     left: 320px;
 }

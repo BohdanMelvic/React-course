@@ -1,6 +1,7 @@
 import React from 'react'
 import './FinishedQuiz.css'
 import Button from '../UI/Button/Button'
+import {Link} from 'react-router-dom'
 
 export default function FinishedQuiz(props) {
     console.log(props.results)
@@ -31,7 +32,9 @@ export default function FinishedQuiz(props) {
                 })}
                 <p>Correct {successCount} / {props.quiz.length}</p>
                 <Button onClick={props.onRetry} type="primary"> Retry </Button>
+                <Link to='/'>
                 <Button onClick={props.onRetry} type="success"> Test List </Button>
+                </Link>
             </ul>
         </div>
     )
