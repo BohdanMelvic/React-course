@@ -5,7 +5,7 @@ import {NavLink} from 'react-router-dom'
 
 const links = [
     {to: '/', label: 'List', exact: true},
-    {to: '/auth', label: 'Authorithation', exact: false},
+    {to: '/auth', label: 'Authorization', exact: false},
     {to: '/quiz-creator', label: 'Create the test', exact: false}
 ]
 
