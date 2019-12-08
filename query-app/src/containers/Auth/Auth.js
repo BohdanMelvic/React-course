@@ -73,7 +73,6 @@ export class Auth extends Component {
     }
 
     onChangeHandler = (event, controlName) => {
-        console.log(`${controlName}`, event.target.value);
 
         const formControls = {...this.state.formControls};
         const control = {...formControls[controlName]};
@@ -87,7 +86,7 @@ export class Auth extends Component {
         let isFormValid = true;
 
         Object.keys(formControls).forEach( (name) => {
-            isFormValid = formControls[controlName].valid && isFormValid
+            isFormValid = formControls[name].valid && isFormValid
         })
 
         this.setState({

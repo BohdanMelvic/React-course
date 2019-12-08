@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import './QuizCreator.css'
 import Button from '../../components/UI/Button/Button'
 import Input from '../../components/UI/Input/Input'
-import {creatControl} from '../../form/formFramework'
+import Select from '../../components/UI/Select/Select'
+import {creatControl, validate, validateForm} from '../../form/formFramework'
 import Auxiliary from '../../hoc/Auxiliary/Auxiliary'
 
 function creatOptionControl(number) {
@@ -31,24 +32,38 @@ export class QuizCreator extends Component {
     
         this.state = {
              quiz: [],
+             isFormValid: false,
+             rightAnserId: 1,
              formControls: creatFormControl()
         }
     }
 
-    submitHandler = () => {
-
+    submitHandler = (event) => {
+        event.preventDefault()
     }
 
-    addQuestionHandler = () => {
-
+    addQuestionHandler = (event) => {
+        event.preventDefault();
     }
 
-    addTestHandler = () => {
-
+    addTestHandler = (event) => {
+        event.preventDefault()
     }
 
     onChangeHandler = (value, controlName) => {
+        const formControls = {...this.state.formControls};
+        const control = {...formControls[controlName]};
 
+        control.value = value;
+        control.touched = true;
+        control.valid = validate(control.value, control.validation);
+
+        formControls[controlName] = control;
+
+        this.setState({
+            formControls,
+            isFormValid : validateForm(formControls)
+        })
     }
 
     renderInputControl = () => {
@@ -58,7 +73,7 @@ export class QuizCreator extends Component {
                <Auxiliary key={controlName + index}>
                 <Input 
                     label={control.label}
-                    value={control.value} 
+                    value={control.value}
                     type={control.type} 
                     valid={control.valid}
                     touched={control.touched}
@@ -72,6 +87,12 @@ export class QuizCreator extends Component {
             )
         })
     }
+
+    selectChangeHandler = (event) => {
+        this.setState({
+            rightAnserId: +event.target.value
+        })
+    }
     
     render() {
         return (
@@ -82,10 +103,22 @@ export class QuizCreator extends Component {
                     <form onSubmit={this.submitHandler}>
                         {this.renderInputControl()}
                         
-                        <select name="" id=""></select>
+                        <Select 
+                            label='Choose the correct answer'
+                            value={this.state.rightAnserId}
+                            onChange={this.selectChangeHandler}
+                            options={[
+                                {text: '1', value: 1},
+                                {text: '2', value: 2},
+                                {text: '3', value: 3},
+                                {text: '4', value: 4}
+                            ]}
+                        >
 
-                        <Button type='primary' onClick={this.addQuestionHandler}>Add question</Button>
-                        <Button type='success' onClick={this.addTestHandler}>Add Test</Button>
+                        </Select>
+
+                        <Button type='primary' onClick={this.addQuestionHandler} disabled={!this.state.isFormValid}>Add question</Button>
+                        <Button type='success' onClick={this.addTestHandler} disabled={!this.state.quiz.length === 0}>Add Test</Button>
                     </form>
                 </div>
             </div>
