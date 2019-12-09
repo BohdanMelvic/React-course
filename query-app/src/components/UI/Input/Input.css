@@ -6,7 +6,7 @@
     margin-bottom: 3px;
     padding: 0;
     display: block;
-    font-weight: 700;
+    font-weight: bold;
 }
 
 .Input input {
@@ -23,9 +23,9 @@
 .Input span {
     color: #f01f30;
     font-size: 12px;
-    font-weight: 700;
+    font-weight: bold;
 }
 
-.Input.invalid {
+.Input.invalid label {
     color: #f01f30;
 }

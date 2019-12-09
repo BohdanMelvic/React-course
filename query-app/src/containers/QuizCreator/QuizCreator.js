@@ -1,166 +1,180 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import './QuizCreator.css'
 import Button from '../../components/UI/Button/Button'
 import Input from '../../components/UI/Input/Input'
 import Select from '../../components/UI/Select/Select'
-import {creatControl, validate, validateForm} from '../../form/formFramework'
+import {createControl, validate, validateForm} from '../../form/formFramework'
 import Auxiliary from '../../hoc/Auxiliary/Auxiliary'
-import axios from '../../axios/axios'
+import axios from '../../axios/axios-quiz'
 
-function creatOptionControl(number) {
-    return creatControl({
-        label: `Answer ${number}`,
-        errorMessage: 'Write something'
-    }, {required: true})
+function createOptionControl(number) {
+  return createControl({
+    label: `Вариант ${number}`,
+    errorMessage: 'Значение не может быть пустым',
+    id: number
+  }, {required: true})
 }
 
-function creatFormControl() {
-    return {
-        question: creatControl({
-            label: 'Enter your question',
-            errorMessage: 'Write something'
-        }, {required: true}),
-        option1: creatOptionControl(1),
-        option2: creatOptionControl(2),
-        option3: creatOptionControl(3),
-        option4: creatOptionControl(4)
-    }
+function createFormControls() {
+  return {
+    question: createControl({
+      label: 'Введите вопрос',
+      errorMessage: 'Вопрос не может быть пустым'
+    }, {required: true}),
+    option1: createOptionControl(1),
+    option2: createOptionControl(2),
+    option3: createOptionControl(3),
+    option4: createOptionControl(4)
+  }
 }
 
-export class QuizCreator extends Component {
-    constructor(props) {
-        super(props)
-    
-        this.state = {
-             quiz: [],
-             isFormValid: false,
-             rightAnserId: 1,
-             formControls: creatFormControl()
-        }
+export default class QuizCreator extends Component {
+
+  state = {
+    quiz: [],
+    isFormValid: false,
+    rightAnswerId: 1,
+    formControls: createFormControls()
+  }
+
+  sibmitHandler = event => {
+    event.preventDefault()
+  }
+
+  addQuestionHandler = event => {
+    event.preventDefault()
+
+    const quiz = this.state.quiz.concat()
+    const index = quiz.length + 1
+
+    const {question, option1, option2, option3, option4} = this.state.formControls
+
+    const questionItem = {
+      question: question.value,
+      id: index,
+      rightAnswerId: this.state.rightAnswerId,
+      answers: [
+        {text: option1.value, id: option1.id},
+        {text: option2.value, id: option2.id},
+        {text: option3.value, id: option3.id},
+        {text: option4.value, id: option4.id}
+      ]
     }
 
-    submitHandler = (event) => {
-        event.preventDefault()
+    quiz.push(questionItem)
+
+    this.setState({
+      quiz,
+      isFormValid: false,
+      rightAnswerId: 1,
+      formControls: createFormControls()
+    })
+  }
+
+  createQuizHandler = async event => {
+    event.preventDefault()
+
+    try {
+      await axios.post('/quizes.json', this.state.quiz)
+
+      this.setState({
+        quiz: [],
+        isFormValid: false,
+        rightAnswerId: 1,
+        formControls: createFormControls()
+      })
+
+    } catch (e) {
+      console.log(e)
     }
+  }
 
-    addQuestionHandler = (event) => {
-        event.preventDefault();
+  changeHandler = (value, controlName) => {
+    const formControls = { ...this.state.formControls }
+    const control = { ...formControls[controlName] }
 
-        const quiz = this.state.quiz.concat()
-        const index = quiz.length + 1
+    control.touched = true
+    control.value = value
+    control.valid = validate(control.value, control.validation)
 
-        const questionItem = {
-            question: this.state.formControls.question.value,
-            id: index,
-            rightAnserId: this.state.rightAnserId,
-            answers: [
-                {text: this.state.formControls.option1.value, id: this.state.formControls.option1.id},
-                {text: this.state.formControls.option2.value, id: this.state.formControls.option2.id},
-                {text: this.state.formControls.option3.value, id: this.state.formControls.option3.id},
-                {text: this.state.formControls.option4.value, id: this.state.formControls.option4.id}
-            ]
-        }
-        quiz.push(questionItem)
+    formControls[controlName] = control
 
-        this.setState({
-            quiz,
-            isFormValid: false,
-            rightAnserId: 1,
-            formControls: creatFormControl()
-        })
-    }
+    this.setState({
+      formControls,
+      isFormValid: validateForm(formControls)
+    })
+  }
 
-    addTestHandler = async (event) => {
-        event.preventDefault()
+  renderControls() {
+    return Object.keys(this.state.formControls).map((controlName, index) => {
+      const control = this.state.formControls[controlName]
 
-        try {
-            await axios.post('/quizes.json', this.state.quiz)
-            
-            this.setState({
-                quiz: [],
-                isFormValid: false,
-                rightAnserId: 1,
-                formControls: creatFormControl()
-            })
-        } catch (error) {
-            console.log(error)
-        }
-    }
+      return (
+        <Auxiliary key={controlName + index}>
+          <Input
+            label={control.label}
+            value={control.value}
+            valid={control.valid}
+            shouldValidate={!!control.validation}
+            touched={control.touched}
+            errorMessage={control.errorMessage}
+            onChange={event => this.changeHandler(event.target.value, controlName)}
+          />
+          { index === 0 ? <hr /> : null }
+        </Auxiliary>
+      )
+    })
+  }
 
-    onChangeHandler = (value, controlName) => {
-        const formControls = {...this.state.formControls};
-        const control = {...formControls[controlName]};
+  selectChangeHandler = event => {
+    this.setState({
+      rightAnswerId: +event.target.value
+    })
+  }
 
-        control.value = value;
-        control.touched = true;
-        control.valid = validate(control.value, control.validation);
+  render() {
+    const select = <Select
+      label="Выберите правильный ответ"
+      value={this.state.rightAnswerId}
+      onChange={this.selectChangeHandler}
+      options={[
+        {text: 1, value: 1},
+        {text: 2, value: 2},
+        {text: 3, value: 3},
+        {text: 4, value: 4}
+      ]}
+    />
 
-        formControls[controlName] = control;
+    return (
+      <div className='QuizCreator'>
+        <div>
+          <h1>Создание теста</h1>
 
-        this.setState({
-            formControls,
-            isFormValid : validateForm(formControls)
-        })
-    }
+          <form onSubmit={this.submitHandler}>
 
-    renderInputControl = () => {
-        return Object.keys(this.state.formControls).map( (controlName, index) =>{
-            const control = this.state.formControls[controlName] 
-            return (
-               <Auxiliary key={controlName + index}>
-                <Input 
-                    label={control.label}
-                    value={control.value}
-                    type={control.type} 
-                    valid={control.valid}
-                    touched={control.touched}
-                    errorMessage={control.errorMessage}
-                    shouldValidate={!!control.validation}
-                    onChange={(event) => this.onChangeHandler(event.target.value, controlName)}
-                />
+            { this.renderControls() }
 
-                {index === 0 ? <hr/> : null}
-                </Auxiliary>
-            )
-        })
-    }
+            { select }
 
-    selectChangeHandler = (event) => {
-        this.setState({
-            rightAnserId: +event.target.value
-        })
-    }
-    
-    render() {
-        return (
-            <div className='QuizCreator'>
-                <div>
-                    <h1>Creating Test</h1>
+            <Button
+              type="primary"
+              onClick={this.addQuestionHandler}
+              disabled={!this.state.isFormValid}
+            >
+              Добавить вопрос
+            </Button>
 
-                    <form onSubmit={this.submitHandler}>
-                        {this.renderInputControl()}
-                        
-                        <Select 
-                            label='Choose the correct answer'
-                            value={this.state.rightAnserId}
-                            onChange={this.selectChangeHandler}
-                            options={[
-                                {text: '1', value: 1},
-                                {text: '2', value: 2},
-                                {text: '3', value: 3},
-                                {text: '4', value: 4}
-                            ]}
-                        >
+            <Button
+              type="success"
+              onClick={this.createQuizHandler}
+              disabled={this.state.quiz.length === 0}
+            >
+              Создать тест
+            </Button>
 
-                        </Select>
-
-                        <Button type='primary' onClick={this.addQuestionHandler} disabled={!this.state.isFormValid}>Add question</Button>
-                        <Button type='success' onClick={this.addTestHandler} disabled={!this.state.quiz.length === 0}>Add Test</Button>
-                    </form>
-                </div>
-            </div>
-        )
-    }
+          </form>
+        </div>
+      </div>
+    )
+  }
 }
-
-export default QuizCreator
