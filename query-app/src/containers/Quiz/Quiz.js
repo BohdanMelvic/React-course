@@ -2,12 +2,15 @@ import React, { Component } from 'react'
 import './Quiz.css'
 import ActiveQuiz from '../../components/ActiveQuiz/ActiveQuiz'
 import FinishedQuiz from '../../components/FinishedQuiz/FinishedQuiz'
+import Loader from '../../components/UI/Loader/Loader'
+import axios from '../../axios/axios'
 
 export class Quiz extends Component {
     constructor(props) {
         super(props)
     
         this.state = {
+            loading: true,
              results: {},
              activeQuestion: 0,
              answerState: null,
@@ -99,8 +102,25 @@ export class Quiz extends Component {
         }
     }
 
-    componentDidMount() {
-        console.log('Quiz ID = ', this.props.match.params.id)
+    async componentDidMount() {
+        try {
+            const res = await axios.get('/quizes/.json')
+            const quizes = []
+            
+            Object.keys(res.data).forEach((key, index) => {
+                quizes.push({
+                    id: key,
+                    name: `Test ${index + 1}`
+                })
+    
+                this.setState({
+                    quizes,
+                    loading: false
+                })
+            })
+           } catch (error) {
+              console.log(error) 
+           }
     }
     
     render() {
