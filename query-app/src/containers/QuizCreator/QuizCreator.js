@@ -44,6 +44,29 @@ export class QuizCreator extends Component {
 
     addQuestionHandler = (event) => {
         event.preventDefault();
+
+        const quiz = this.state.quiz.concat()
+        const index = quiz.length + 1
+
+        const questionItem = {
+            question: this.state.formControls.question.value,
+            id: index,
+            rightAnserId: this.state.rightAnserId,
+            answers: [
+                {text: this.state.formControls.option1.value, id: this.state.formControls.option1.id},
+                {text: this.state.formControls.option2.value, id: this.state.formControls.option2.id},
+                {text: this.state.formControls.option3.value, id: this.state.formControls.option3.id},
+                {text: this.state.formControls.option4.value, id: this.state.formControls.option4.id}
+            ]
+        }
+        quiz.push(questionItem)
+
+        this.setState({
+            quiz,
+            isFormValid: false,
+            rightAnserId: 1,
+            formControls: creatFormControl()
+        })
     }
 
     addTestHandler = (event) => {
