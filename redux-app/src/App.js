@@ -3,17 +3,25 @@ import {connect} from 'react-redux'
 import './App.scss'
 
 class App extends Component {
+  constructor(props) {
+    super(props)
+  
+    this.state = {
+      counter: 0
+    }
+  }
+  
   
   updateCounter(value) {
-    // this.setState({
-    //   counter: this.state.counter + value
-    // })
+    this.setState({
+      counter: this.state.counter + value
+    })
   }
 
   render() {
     return (
       <div className={'App'}>
-        <h1>Counter <strong>{this.props.counter}</strong></h1>
+        <h1>Counter <strong>{this.state.counter}</strong></h1>
 
         <hr/>
 
