@@ -1,17 +1,11 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import './App.scss'
+import Counter from './Counter'
 
 class App extends Component {
 
-  updateCounter(value) {
-    this.setState({
-      counter: this.props.counter + value
-    })
-  }
-
   render() {
-    console.log(this.props)
     return (
       <div className={'App'}>
         <h1>Counter <strong>{this.props.counter}</strong></h1>
@@ -22,6 +16,12 @@ class App extends Component {
           <button onClick={() => this.props.onAdd(1)}>Add 1</button>
           <button onClick={() => this.props.onSub(-1)}>Subtract 1</button>
         </div>
+        <div className="Actions">
+          <button onClick={() => this.props.onAdd(5)}>Add 5</button>
+          <button onClick={() => this.props.onSub(5)}>Subtract 5</button>
+        </div>
+
+        <Counter />
       </div>
     )
   }
@@ -29,14 +29,14 @@ class App extends Component {
 
 function mapStateToProps(state) {
   return {
-    counter: state.counter
+    counter: state.counter1.counter
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    onAdd: () => dispatch({type: 'ADD'}),
-    onSub: () => dispatch({type: 'SUB'})
+    onAdd: (number) => dispatch({type: 'ADD', value: number}),
+    onSub: (number) => dispatch({type: 'SUB', value: number})
   }
 }
 
