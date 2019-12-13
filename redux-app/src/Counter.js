@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
+import {changeCountF} from './redux/actions/actions'
 
 export class Counter extends Component {
     render() {
@@ -22,7 +23,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        changeCount: (number) => dispatch({type: 'changeCount', value: number}),
+        changeCount: (number) => dispatch(changeCountF(number)),
     }
   }
 
