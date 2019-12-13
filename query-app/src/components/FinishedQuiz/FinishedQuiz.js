@@ -36,12 +36,12 @@ const FinishedQuiz = props => {
         }) }
       </ul>
 
-      <p>Правильно {successCount} из {props.quiz.length}</p>
+      <p>Correct {successCount} / {props.quiz.length}</p>
 
       <div>
-        <Button onClick={props.onRetry} type="primary">Повторить</Button>
+        <Button onClick={props.onRetry} type="primary">Retry</Button>
         <Link to="/">
-          <Button type="success">Перейти в список тестов</Button>
+          <Button type="success">Test List</Button>
         </Link>
       </div>
     </div>

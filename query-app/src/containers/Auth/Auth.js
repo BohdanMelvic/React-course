@@ -44,7 +44,7 @@ export default class Auth extends Component {
       returnSecureToken: true
     }
     try {
-      const response = await axios.post('https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyBRj1R0UEHzbzdDaOOQIhjqWUvDsusN4Mo', authData)
+      const response = await axios.post('https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyDz8xmzznUEK1Ogs98VcdgiU5AwTTudOho', authData)
 
       console.log(response.data)
     } catch (e) {
@@ -137,7 +137,7 @@ export default class Auth extends Component {
     return (
       <div className='Auth'>
         <div>
-          <h1>Авторизация</h1>
+          <h1>Authorization</h1>
 
           <form onSubmit={this.submitHandler} className='AuthForm'>
 
@@ -148,7 +148,7 @@ export default class Auth extends Component {
               onClick={this.loginHandler}
               disabled={!this.state.isFormValid}
             >
-              Войти
+              Log In
             </Button>
 
             <Button
@@ -156,7 +156,7 @@ export default class Auth extends Component {
               onClick={this.registerHandler}
               disabled={!this.state.isFormValid}
             >
-              Зарегистрироваться
+              Sigh Up
             </Button>
           </form>
         </div>
