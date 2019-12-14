@@ -1,7 +1,13 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './Cockpit.css';
 
-const cockpit = (props) => {
+export default function Cockpit(props) {
+    useEffect( () => {
+        console.log('Cockpit.js: useEffect');
+
+        setTimeout(() => {alert("saved to cloud")}, 1000)
+    }, [props.persons]);
+
     const styleBtn = {
         backgroundColor: 'yellowgreen',
         color: 'white',
@@ -26,4 +32,3 @@ const cockpit = (props) => {
     );
 }
 
-export default cockpit;
