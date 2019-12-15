@@ -1,11 +1,16 @@
 import React, {useEffect} from 'react';
 import './Cockpit.css';
 
-export default function Cockpit(props) {
+const Cockpit = (props) => {
     useEffect( () => {
         console.log('Cockpit.js: useEffect');
 
-        setTimeout(() => {alert("saved to cloud")}, 1000)
+        const timer = setTimeout(() => {alert("saved to cloud")}, 1000);
+
+        return () => {
+            clearTimeout(timer);
+            console.log('Cockpit.js: Cleanup work in useEfect');
+        }
     }, [props.persons]);
 
     const styleBtn = {
@@ -32,3 +37,4 @@ export default function Cockpit(props) {
     );
 }
 
+export default React.memo(Cockpit)

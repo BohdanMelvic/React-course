@@ -1,11 +1,18 @@
- import React, {Component} from 'react'
+ import React, {Component, PureComponent} from 'react'
  import Person from './Person/Person.js';
  //import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
  
  class Persons extends Component {
+
   shouldComponentUpdate(nextProps, nextState) {
     console.log('[Persons.js] shouldComponentUpdate');
-    return true;
+    if (nextProps.persons !== this.props.persons ||
+        nextProps.clicked !== this.props.clicked || 
+        nextProps.changed !== this.props.changed ) {
+      return true
+    } else {
+      return false;
+    }
   }
 
   getSnapshotBeforeUpdate(previusProps, previusState) {
@@ -15,6 +22,10 @@
 
   componentDidUpdate() {
     console.log('[Persons.js] componentDidUpdate');
+  }
+
+  componentWillUnmount() {
+    console.log('[Persons.js] componentWillUnmount');
   }
 
   render() {
