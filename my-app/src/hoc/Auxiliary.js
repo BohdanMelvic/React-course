@@ -1,5 +1,5 @@
-import React from 'react';
+//import React from 'react';
 
-const Aux = props => props.children;
+const Auxiliary = props => props.children;
 
-export default Aux;
+export default Auxiliary;

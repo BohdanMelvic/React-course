@@ -4,6 +4,8 @@ import './App.css';
 import Persons from '../components/Persons/Persons.js';
 import Radium,  { StyleRoot } from 'radium';
 import Cockpit from '../components/Cockpit/Cockpit';
+import withClass from '../hoc/withClass';
+import Auxiliary from '../hoc/Auxiliary';
 
 //{ useState } function App(props) {
 //   const [personState, setPerson] = useState( {
@@ -44,7 +46,8 @@ class App extends Component {
       ],
       otherState: 'bla-bla-bla',
       showPersons: false,
-      showCockpit: true
+      showCockpit: true,
+      changeCounter: 0
     }
   }
 
@@ -73,7 +76,12 @@ class App extends Component {
     const persons = [ ...this.state.persons ];
     persons[personIndex] = person;
 
-    this.setState({ persons: persons });
+    this.setState( (pervState, props) => {
+      return {
+        persons: persons, 
+        changeCounter: pervState.changeCounter + 1
+      }
+    });
   }
 
   togglePersonsHandler = () => {
@@ -103,7 +111,7 @@ class App extends Component {
 
     return (
        <StyleRoot>
-        <div className="App">
+        <Auxiliary>
           <button onClick={() => {this.setState({showCockpit: !this.state.showCockpit})}}>Remove Cockpit</button>
          { this.state.showCockpit ?
            <Cockpit
@@ -115,10 +123,10 @@ class App extends Component {
           : null
           }
           {persons} 
-        </div>
+        </Auxiliary>
       </StyleRoot>
     )
   }
 }
 
-export default Radium(App);
+export default withClass(Radium(App), 'App');

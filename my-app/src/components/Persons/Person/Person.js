@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import  './Person.css';
 import Radium from 'radium';
-import Aux from '../../../hoc/Auxiliary'
+import Auxiliary from '../../../hoc/Auxiliary'
+import withClass from '../../../hoc/withClass'
+import PropTypes from 'prop-types';
 
 class Person extends Component {
     constructor(props) {
@@ -24,15 +26,22 @@ class Person extends Component {
     render() {
         console.log('[Persons.js] rendring...');
         return (
-            <Aux style={this.state.style}>
+            <Auxiliary>
             {/* <div className="Person" style={this.state.style}> */}
                 <p onClick={this.props.click}>Hi! My name is {this.props.name}. I'm a freak! and I'm {this.props.age} years old.</p>
                 <p>{this.props.children}</p>
                 <input type="text" onChange={this.props.changed} value={this.props.name}/>
             {/* </div> */}
-            </Aux>
+            </Auxiliary>
         );
     }
 }
 
-export default Radium(Person);
+Person.propTypes = {
+    click: PropTypes.func,
+    name: PropTypes.string,
+    age: PropTypes.number,
+    changed: PropTypes.func
+};
+
+export default withClass(Radium(Person), 'Person');
