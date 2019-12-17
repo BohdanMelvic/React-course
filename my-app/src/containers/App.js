@@ -6,6 +6,7 @@ import Radium,  { StyleRoot } from 'radium';
 import Cockpit from '../components/Cockpit/Cockpit';
 import withClass from '../hoc/withClass';
 import Auxiliary from '../hoc/Auxiliary';
+import AuthContext from '../context/auth-context'
 
 //{ useState } function App(props) {
 //   const [personState, setPerson] = useState( {
@@ -47,7 +48,8 @@ class App extends Component {
       otherState: 'bla-bla-bla',
       showPersons: false,
       showCockpit: true,
-      changeCounter: 0
+      changeCounter: 0,
+      authenticated: false
     }
   }
 
@@ -95,6 +97,10 @@ class App extends Component {
     this.setState({persons: persons});
   }
 
+  loginHandler = () => {
+    this.setState( {authenticated: true} )
+  }
+
   render () {
 
     let persons = null;
@@ -105,6 +111,7 @@ class App extends Component {
           persons={this.state.persons} 
           click={this.deletePersonHandler}
           changed={this.nameChangeHandler}
+          isAuthenticated={this.state.authenticated}
         />
       );
     }
@@ -113,6 +120,12 @@ class App extends Component {
        <StyleRoot>
         <Auxiliary>
           <button onClick={() => {this.setState({showCockpit: !this.state.showCockpit})}}>Remove Cockpit</button>
+          <AuthContext.Provider 
+            value={{
+              authenticated: this.state.authenticated,
+              login: this.loginHandler
+             }}
+          >
          { this.state.showCockpit ?
            <Cockpit
             title={this.props.title}
@@ -122,7 +135,8 @@ class App extends Component {
           /> 
           : null
           }
-          {persons} 
+          {persons}
+          </AuthContext.Provider>
         </Auxiliary>
       </StyleRoot>
     )

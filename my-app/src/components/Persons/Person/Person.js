@@ -4,6 +4,7 @@ import Radium from 'radium';
 import Auxiliary from '../../../hoc/Auxiliary'
 import withClass from '../../../hoc/withClass'
 import PropTypes from 'prop-types';
+import AuthContext from '../../../context/auth-context'
 
 class Person extends Component {
     constructor(props) {
@@ -25,8 +26,11 @@ class Person extends Component {
     // throw new Error('some bullshit');
     // }
 
+    static contextType = AuthContext; // the better way use CONTEXt
+
     componentDidMount() {
         this.inputElemRef.current.focus();
+        console.log(this.context.authenticated);
     }
 
     render() {
@@ -34,6 +38,12 @@ class Person extends Component {
         return (
             <Auxiliary>
             {/* <div className="Person" style={this.state.style}> */}
+                {/* <AuthContext.Consumer>
+                    { (context) =>{ return context.authenticated ? <p>Authenticated!</p> : <p>Please Log In!</p>} }
+                </AuthContext.Consumer> */}
+
+                { this.context.authenticated ? <p>Authenticated!</p> : <p>Please Log In!</p> }                
+              
                 <p onClick={this.props.click}>Hi! My name is {this.props.name}. I'm a freak! and I'm {this.props.age} years old.</p>
                 <p>{this.props.children}</p>
                 <input type="text" 
