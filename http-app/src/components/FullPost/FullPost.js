@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import './FullPost.css';
 
 class FullPost extends Component {
