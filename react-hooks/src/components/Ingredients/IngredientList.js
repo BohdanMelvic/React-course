@@ -1,11 +1,13 @@
 import React from 'react';
 
 import './IngredientList.css';
+import LoadingIndicator from '../UI/LoadingIndicator';
 
 const IngredientList = props => {
   return (
     <section className="ingredient-list">
       <h2>Loaded Ingredients</h2>
+      {props.loading ? <LoadingIndicator /> : null}
       <ul>
         {props.ingredients.map(ig => (
           <li key={ig.id} onClick={props.onRemoveItem.bind(this, ig.id)}>
