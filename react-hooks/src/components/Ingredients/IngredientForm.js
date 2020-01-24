@@ -12,7 +12,7 @@ const IngredientForm = React.memo(props => {
     event.preventDefault();
     props.onAddIngredient({ title: enteredTitle, amount: enteredAmount });
   };
-
+  console.log('LOAD FORM')
   return (
     <section className="ingredient-form">
       <Card>
