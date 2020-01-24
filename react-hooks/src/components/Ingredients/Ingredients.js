@@ -1,4 +1,4 @@
-import React, { useReducer, useState, useEffect, useCallback} from 'react';
+import React, { useReducer, useEffect, useCallback} from 'react';
 
 import IngredientForm from './IngredientForm';
 import Search from './Search';
@@ -18,15 +18,31 @@ const ingredientReducer = (currentIngredients, action) => {
   }
 };
 
+const httpReducer = (currentHttpState, action) => {
+  switch (action.type) {
+    case "SEND":
+      return { loading: true, error: null };
+    case "RESPONSE":
+      return { ...currentHttpState, loading: false };
+    case "ERROR":
+      return { loading: false, error: action.errorMessage };
+    case "CLEAR":
+      return {...currentHttpState, error: null};
+    default:
+      throw new Error('Ops, Error!');
+  }
+}
+
 function Ingredients() {
   const [userIngredients, dispatch] = useReducer(ingredientReducer, []);
-
+  const [httpState, dispatchHttp] = useReducer(httpReducer, {loading: false, error: null})
   //const [ userIngredients, setUserIngredients ] = useState([]);
-  const [ isLoading, setIsLoading ] = useState(false);
-  const [error, setError ] = useState();
+  //const [ isLoading, setIsLoading ] = useState(false);
+  //const [error, setError ] = useState();
 
   useEffect( () => {
-    setIsLoading(true);
+    //setIsLoading(true);
+    dispatchHttp({type: 'SEND'});
     fetch('https://react-query-app.firebaseio.com/ingredients.json')
     .then( response => response.json())
     .then( responseData => {
@@ -38,10 +54,12 @@ function Ingredients() {
           amount: responseData[key].amount
         });
       }
-      setIsLoading(false);
+      //setIsLoading(false);
+      dispatchHttp({type: 'RESPONSE'});
       dispatch({type: 'SET', ingredients: loadedIngredients});
     }).catch( error => {
-      setError(error.message);
+      //setError(error.message);
+      dispatchHttp({type: 'ERROR', errorMessage: error.message});
       console.log(error);
     })
   }, []);
@@ -51,33 +69,34 @@ function Ingredients() {
   }, [userIngredients]);
 
   const addIngredientHandler = ingredint => {
-    setIsLoading(true);
+    dispatchHttp({type: 'SEND'});
     fetch('https://react-query-app.firebaseio.com/ingredients.json', {
       method: 'POST',
       body: JSON.stringify(ingredint),
       headers: { 'Content-Type': 'application/json' }
     }).then( response => {
-      setIsLoading(false);
+      dispatchHttp({type: 'RESPONSE'});
       return response.json();
     }).then(responseData => {
       //setUserIngredients(prevIngredients => [...prevIngredients, {id: responseData.name, ...ingredint}]);
       dispatch({type: 'ADD', ingredient: {id: responseData.name, ...ingredint}});
     }).catch( error => {
-      setError(error.message);
+      dispatchHttp({type: 'ERROR', errorMessage: error.message});
       console.log(error);
     });
   } 
 
   const removeIngredientHandler = IngredientID => {
-    setIsLoading(true);
+    dispatchHttp({type: 'SEND'});
       fetch(`https://react-query-app.firebaseio.com/ingredients/${IngredientID}.json`, {
         method: 'DELETE'
       }).then( response => {
-        setIsLoading(false);
+        dispatchHttp({type: 'RESPONSE'});
         //setUserIngredients( (prevIngredients) => prevIngredients.filter(ing => ing.id !== IngredientID) );
         dispatch({type: 'DELETE', id: IngredientID});
       }).catch( error => { 
-        setError(error.message);
+        dispatchHttp({type: 'ERROR', errorMessage: error.message});
+        //setError(error.message);
         console.log(error);
       });
   }
@@ -87,18 +106,18 @@ function Ingredients() {
   }, []);
 
   const clearError = () => {
-    setError(null);
-    setIsLoading(false);
+    dispatchHttp({type: 'CLEAR'});
+    dispatchHttp({type: 'RESPONSE'});
   }
 
   return (
     <div className="App">
-      {error ? <ErrorModal onClose={clearError}>{error}</ErrorModal> : null}
-      <IngredientForm onAddIngredient={addIngredientHandler} loading={isLoading} />
+      {httpState.error ? <ErrorModal onClose={clearError}>{httpState.error}</ErrorModal> : null}
+      <IngredientForm onAddIngredient={addIngredientHandler} loading={httpState.loading} />
 
       <section>
         <Search onLoadIngredients={filterIngredientsHandler} />
-        <IngredientList ingredients={userIngredients} onRemoveItem={removeIngredientHandler} loading={isLoading} />
+        <IngredientList ingredients={userIngredients} onRemoveItem={removeIngredientHandler} loading={httpState.loading} />
       </section>
     </div>
   );
